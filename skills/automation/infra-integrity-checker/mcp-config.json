@@ -1,0 +1,80 @@
+{
+  "$schema": "https://aiwork4me.github.io/schemas/mcp-2026.json",
+  "name": "infra-integrity-checker",
+  "version": "1.0.0",
+  "protocol": "mcp-2026",
+  "tools": [
+    {
+      "name": "infra-integrity-checker",
+      "description": "Systematic self-test skill",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Input parameter"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "timeout": {
+                "type": "number"
+              },
+              "retries": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "required": [
+          "input"
+        ]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "skillLink": {
+    "compatible": true,
+    "inputType": "InfraIntegrityCheckerInput",
+    "outputType": "InfraIntegrityCheckerOutput"
+  },
+  "runtime": {
+    "type": "bun",
+    "version": ">=1.0.0",
+    "packageManager": "bun",
+    "entrypoint": "./index.ts"
+  },
+  "permissions": {
+    "network": [],
+    "filesystem": [],
+    "env": [],
+    "sandbox": {
+      "mode": "strict",
+      "allowNetworkOutbound": false,
+      "allowFilesystemWrite": false,
+      "allowSubprocess": false
+    }
+  },
+  "deepAgent": {
+    "supportsProgress": true,
+    "supportsCancellation": true,
+    "supportsSelfCorrection": true,
+    "maxExecutionTime": 30000
+  },
+  "resourceProfile": {
+    "intensity": "medium",
+    "estimatedTokenUsage": "500-5k",
+    "estimatedDuration": "1-30s",
+    "memoryRequirement": "low",
+    "cpu": "low",
+    "memory": "128mb",
+    "timeout": 30
+  }
+}

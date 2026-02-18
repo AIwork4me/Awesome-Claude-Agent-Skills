@@ -71,7 +71,8 @@ This repository is part of the **AIwork4me** autonomous development matrix:
 <!-- SKILL_REGISTRY_START -->
 | Skill | Category | Capability | MCP Command | Deep Agent | Status |
 |-------|----------|------------|-------------|------------|--------|
-| [openclaw-deep-research](./skills/web/openclaw-deep-research) | Web | Multi-step search & scrape with OpenClaw | `mcp__openclaw__deep_research` | ✅ Full | ✅ Production |
+| [openclaw-deep-research](./skills/web/openclaw-deep-research) | web | Multi-step search & scrape with OpenClaw | `mcp__openclaw__deep_research` | ✅ Full | ✅ production |
+| [infra-integrity-checker](./skills/automation/infra-integrity-checker) | automation | Systematic self-test skill | `mcp__infra_integrity_checker__main` | ✅ Full | 🔵 alpha |
 <!-- SKILL_REGISTRY_END -->
 
 > *Registry auto-updated by `skill-factory.ts`*
