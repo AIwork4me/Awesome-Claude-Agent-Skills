@@ -26,9 +26,11 @@
 
 ## 📦 Skill Registry
 
+<!-- SKILL_REGISTRY_START -->
 | Skill | Category | Capability | MCP Command | Status |
 |-------|----------|------------|-------------|--------|
 | [openclaw-deep-research](./skills/web/openclaw-deep-research) | Web | Multi-step search & scrape with OpenClaw | `mcp__openclaw__deep_research` | ✅ Production |
+<!-- SKILL_REGISTRY_END -->
 
 > *Registry auto-updated by `skill-factory.ts`*
 
