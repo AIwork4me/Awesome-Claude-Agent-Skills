@@ -1,0 +1,55 @@
+{
+  "$schema": "https://aiwork4me.github.io/schemas/mcp-2026.json",
+  "name": "{{SKILL_NAME}}",
+  "version": "1.0.0",
+  "protocol": "mcp-2026",
+  "description": "{{SKILL_DESCRIPTION}}",
+  "tools": [
+    {
+      "name": "{{SKILL_NAME}}",
+      "description": "{{SKILL_DESCRIPTION}}",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "input": {
+            "type": "string",
+            "description": "Primary input parameter"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "timeout": { "type": "number", "description": "Request timeout in ms" },
+              "retries": { "type": "number", "description": "Number of retry attempts" },
+              "debug": { "type": "boolean", "description": "Enable debug logging" }
+            }
+          }
+        },
+        "required": ["input"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "result": { "type": "object" },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "skillName": { "type": "string" },
+              "timestamp": { "type": "string" },
+              "duration": { "type": "number" },
+              "version": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "skillLink": {
+    "compatible": true,
+    "inputType": "SkillInput",
+    "outputType": "SkillLinkOutput"
+  },
+  "runtime": {
+    "platform": "bun",
+    "entrypoint": "./src/index.ts"
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://aiwork4me.github.io/schemas/mcp-2026.json",
+  "name": "openclaw-deep-research",
+  "version": "1.0.0",
+  "protocol": "mcp-2026",
+  "description": "Multi-step search & scrape with OpenClaw integration",
+  "tools": [
+    {
+      "name": "deep_research",
+      "description": "Execute deep research using OpenClaw with multi-step search and scraping capabilities",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query for research"
+          },
+          "options": {
+            "type": "object",
+            "properties": {
+              "depth": {
+                "type": "number",
+                "description": "Maximum search depth (1-5)",
+                "minimum": 1,
+                "maximum": 5
+              },
+              "includeRelated": {
+                "type": "boolean",
+                "description": "Include related searches"
+              },
+              "timeout": {
+                "type": "number",
+                "description": "Timeout per request (ms)"
+              },
+              "maxResults": {
+                "type": "number",
+                "description": "Maximum results to return"
+              },
+              "extractContent": {
+                "type": "boolean",
+                "description": "Extract full content from pages"
+              },
+              "dateRange": {
+                "type": "string",
+                "enum": ["day", "week", "month", "year", "all"],
+                "description": "Filter by date range"
+              }
+            }
+          }
+        },
+        "required": ["query"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": { "type": "string" },
+                "url": { "type": "string" },
+                "snippet": { "type": "string" },
+                "content": { "type": "string" },
+                "domain": { "type": "string" },
+                "relevance": { "type": "number" },
+                "publishedDate": { "type": "string" },
+                "relatedQueries": {
+                  "type": "array",
+                  "items": { "type": "string" }
+                }
+              }
+            }
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "pagesScraped": { "type": "number" },
+              "totalTime": { "type": "number" },
+              "engine": { "type": "string" },
+              "query": { "type": "string" },
+              "timestamp": { "type": "string" }
+            }
+          },
+          "nextSkillHint": { "type": "string" },
+          "chainHistory": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    }
+  ],
+  "skillLink": {
+    "compatible": true,
+    "inputType": "ResearchInput",
+    "outputType": "ResearchOutput",
+    "suggestedNextSkills": ["ai-summarizer", "content-extractor", "github-issue-bot"]
+  },
+  "environment": {
+    "required": ["OPENCLAW_API_KEY"],
+    "optional": ["OPENCLAW_ENDPOINT"]
+  },
+  "runtime": {
+    "platform": "bun",
+    "entrypoint": "./index.ts"
+  }
+}

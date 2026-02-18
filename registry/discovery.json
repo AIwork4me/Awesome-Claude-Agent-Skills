@@ -1,0 +1,32 @@
+{
+  "$schema": "https://aiwork4me.github.io/schemas/discovery-2026.json",
+  "version": "1.0.0",
+  "lastUpdated": "2026-02-18T00:00:00Z",
+  "maintainer": "AIwork4me",
+  "skills": [
+    {
+      "name": "openclaw-deep-research",
+      "category": "web",
+      "version": "1.0.0",
+      "capability": "Multi-step search & scrape with OpenClaw",
+      "mcpCommand": "mcp__openclaw__deep_research",
+      "status": "production",
+      "skillLink": {
+        "input": ["query: string", "options?: ResearchOptions"],
+        "output": ["results: ResearchResult[]", "metadata: ScrapingMetadata"],
+        "chainable": true
+      },
+      "entrypoint": "./skills/web/openclaw-deep-research/index.ts",
+      "dependencies": ["@openclaw/sdk", "cheerio"],
+      "created": "2026-02-18T00:00:00Z",
+      "updated": "2026-02-18T00:00:00Z"
+    }
+  ],
+  "categories": ["web", "code", "data", "automation"],
+  "templates": {
+    "mcp-ts-starter": {
+      "path": "./templates/mcp-ts-starter",
+      "description": "Gold-standard TypeScript MCP server template"
+    }
+  }
+}

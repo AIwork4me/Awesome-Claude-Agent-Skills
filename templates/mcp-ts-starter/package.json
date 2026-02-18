@@ -1,0 +1,40 @@
+{
+  "name": "@aiwork4me/{{SKILL_NAME}}",
+  "version": "1.0.0",
+  "description": "{{SKILL_DESCRIPTION}}",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch run src/index.ts",
+    "test": "bun test",
+    "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+    "lint": "biome check ./src",
+    "format": "biome format --write ./src"
+  },
+  "keywords": [
+    "aiwork4me",
+    "mcp",
+    "skill",
+    "claude",
+    "ai-agent"
+  ],
+  "author": "AIwork4me",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^2026.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun-types": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AIwork4me/Awesome-Claude-Agent-Skills"
+  },
+  "bugs": {
+    "url": "https://github.com/AIwork4me/Awesome-Claude-Agent-Skills/issues"
+  },
+  "homepage": "https://github.com/AIwork4me/Awesome-Claude-Agent-Skills#readme"
+}

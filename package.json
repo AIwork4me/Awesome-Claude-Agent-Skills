@@ -1,0 +1,45 @@
+{
+  "name": "@aiwork4me/awesome-claude-agent-skills",
+  "version": "1.0.0",
+  "description": "Self-evolving ecosystem of MCP-compliant skills for Claude Code and AI agents",
+  "type": "module",
+  "scripts": {
+    "skill": "bun run scripts/skill-factory.ts",
+    "create": "bun run scripts/skill-factory.ts create",
+    "validate": "bun run scripts/skill-factory.ts validate",
+    "list": "bun run scripts/skill-factory.ts list",
+    "test": "bun test",
+    "build": "bun run build:all",
+    "build:all": "echo 'Building all skills...' && bun test",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "keywords": [
+    "aiwork4me",
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "claude-code",
+    "ai-agent",
+    "skills",
+    "langgraph",
+    "deep-agents"
+  ],
+  "author": "AIwork4me",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AIwork4me/Awesome-Claude-Agent-Skills"
+  },
+  "bugs": {
+    "url": "https://github.com/AIwork4me/Awesome-Claude-Agent-Skills/issues"
+  },
+  "homepage": "https://github.com/AIwork4me/Awesome-Claude-Agent-Skills#readme",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun-types": "latest"
+  },
+  "engines": {
+    "bun": ">=1.0.0"
+  }
+}
