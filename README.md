@@ -8,6 +8,8 @@
 
 ---
 
+**English** | **[中文](./README_cn.md)**
+
 <img src="https://img.shields.io/badge/AIwork4me-Brand-FF6B35?style=for-the-badge&logo=robot&logoColor=white" />
 <img src="https://img.shields.io/badge/MCP-2026_Protocol-4A90D9?style=for-the-badge&logo=protocol&logoColor=white" />
 <img src="https://img.shields.io/badge/Architecture-Autonomous-22C55E?style=for-the-badge&logo=autonomous&logoColor=white" />
