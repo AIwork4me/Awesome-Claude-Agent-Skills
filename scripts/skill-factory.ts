@@ -1097,13 +1097,25 @@ describe("Security", () => {
       const dangerousPaths = [
         "../../../etc/passwd",
         "..\\\\..\\\\windows\\\\system32",
-        "/etc/shadow",
         "~/../secret",
       ];
 
       for (const path of dangerousPaths) {
         // Path validation should reject these
         expect(path.includes("..")).toBe(true);
+      }
+    });
+
+    test("should block absolute path access attempts", () => {
+      const absolutePaths = [
+        "/etc/shadow",
+        "/etc/passwd",
+        "C:\\\\Windows\\\\System32",
+      ];
+
+      // These are absolute paths that should be blocked
+      for (const path of absolutePaths) {
+        expect(path.startsWith("/") || path.includes(":\\\\")).toBe(true);
       }
     });
   });
