@@ -379,12 +379,15 @@ async function updateReadmeTable(registry: DiscoveryRegistry): Promise<void> {
         deprecated: "❌",
       }[skill.status];
 
-      return `| [${skill.name}](./skills/${skill.category}/${skill.name}) | ${skill.category} | ${skill.capability} | \`${skill.mcpCommand}\` | ${statusEmoji} ${skill.status} |`;
+      // Check if skill has Deep Agent features
+      const deepAgentStatus = skill.resourceProfile ? "✅ Full" : "⚠️ Partial";
+
+      return `| [${skill.name}](./skills/${skill.category}/${skill.name}) | ${skill.category} | ${skill.capability} | \`${skill.mcpCommand}\` | ${deepAgentStatus} | ${statusEmoji} ${skill.status} |`;
     })
     .join("\n");
 
-  const tableHeader = `| Skill | Category | Capability | MCP Command | Status |
-|-------|----------|------------|-------------|--------|`;
+  const tableHeader = `| Skill | Category | Capability | MCP Command | Deep Agent | Status |
+|-------|----------|------------|-------------|------------|--------|`;
 
   const newTableContent = `${tableHeader}\n${tableRows}`;
 
