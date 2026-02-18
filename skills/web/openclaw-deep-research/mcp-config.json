@@ -97,12 +97,40 @@
     "outputType": "ResearchOutput",
     "suggestedNextSkills": ["ai-summarizer", "content-extractor", "github-issue-bot"]
   },
+  "runtime": {
+    "type": "bun",
+    "version": ">=1.0.0",
+    "packageManager": "bun",
+    "entrypoint": "./index.ts",
+    "installCommand": "bun install",
+    "runCommand": "bun run index.ts"
+  },
+  "permissions": {
+    "network": ["api.openclaw.io", "*.openclaw.io"],
+    "filesystem": ["read:./output", "write:./output"],
+    "env": ["OPENCLAW_API_KEY", "OPENCLAW_ENDPOINT"],
+    "sandbox": {
+      "mode": "managed",
+      "allowNetworkOutbound": true,
+      "allowFilesystemWrite": false,
+      "allowSubprocess": false
+    }
+  },
   "environment": {
     "required": ["OPENCLAW_API_KEY"],
     "optional": ["OPENCLAW_ENDPOINT"]
   },
-  "runtime": {
-    "platform": "bun",
-    "entrypoint": "./index.ts"
+  "securityManifest": {
+    "version": "2026.1",
+    "trustLevel": "verified",
+    "auditStatus": "passed",
+    "lastAudit": "2026-02-18T00:00:00Z",
+    "riskLevel": "low",
+    "dataHandling": {
+      "collectsUserData": false,
+      "sendsDataExternally": true,
+      "externalEndpoints": ["api.openclaw.io"],
+      "dataRetention": "none"
+    }
   }
 }

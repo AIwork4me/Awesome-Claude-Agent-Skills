@@ -49,7 +49,38 @@
     "outputType": "SkillLinkOutput"
   },
   "runtime": {
-    "platform": "bun",
-    "entrypoint": "./src/index.ts"
+    "type": "bun",
+    "version": ">=1.0.0",
+    "packageManager": "bun",
+    "entrypoint": "./src/index.ts",
+    "installCommand": "bun install",
+    "runCommand": "bun run src/index.ts",
+    "alternatives": [
+      { "type": "node", "packageManager": "pnpm", "installCommand": "pnpm install" },
+      { "type": "node", "packageManager": "npm", "installCommand": "npm install" }
+    ]
+  },
+  "permissions": {
+    "network": [],
+    "filesystem": [],
+    "env": [],
+    "sandbox": {
+      "mode": "strict",
+      "allowNetworkOutbound": false,
+      "allowFilesystemWrite": false,
+      "allowSubprocess": false
+    }
+  },
+  "securityManifest": {
+    "version": "2026.1",
+    "trustLevel": "unverified",
+    "auditStatus": "pending",
+    "riskLevel": "unknown",
+    "dataHandling": {
+      "collectsUserData": false,
+      "sendsDataExternally": false,
+      "externalEndpoints": [],
+      "dataRetention": "none"
+    }
   }
 }

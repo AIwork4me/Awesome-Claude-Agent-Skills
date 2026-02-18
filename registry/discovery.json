@@ -1,6 +1,6 @@
 {
   "$schema": "https://aiwork4me.github.io/schemas/discovery-2026.json",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "lastUpdated": "2026-02-18T00:00:00Z",
   "maintainer": "AIwork4me",
   "skills": [
@@ -18,6 +18,17 @@
       },
       "entrypoint": "./skills/web/openclaw-deep-research/index.ts",
       "dependencies": ["@openclaw/sdk", "cheerio"],
+      "runtime": {
+        "type": "bun",
+        "version": ">=1.0.0",
+        "packageManager": "bun",
+        "entrypoint": "./index.ts"
+      },
+      "permissions": {
+        "network": ["api.openclaw.io", "*.openclaw.io"],
+        "filesystem": ["read:./output", "write:./output"],
+        "env": ["OPENCLAW_API_KEY", "OPENCLAW_ENDPOINT"]
+      },
       "created": "2026-02-18T00:00:00Z",
       "updated": "2026-02-18T00:00:00Z"
     }
@@ -26,7 +37,22 @@
   "templates": {
     "mcp-ts-starter": {
       "path": "./templates/mcp-ts-starter",
-      "description": "Gold-standard TypeScript MCP server template"
+      "description": "Gold-standard TypeScript MCP server template",
+      "runtime": {
+        "type": "bun",
+        "version": ">=1.0.0",
+        "packageManager": "bun",
+        "alternatives": ["node-ts", "pnpm"]
+      }
+    }
+  },
+  "runtimeSupport": {
+    "primary": "bun",
+    "supported": ["bun", "node", "pnpm", "npm"],
+    "recommendations": {
+      "bun": "Fastest runtime, recommended for 2026",
+      "node": "Legacy support, use pnpm for better performance",
+      "pnpm": "Efficient disk usage, good for monorepos"
     }
   }
 }
