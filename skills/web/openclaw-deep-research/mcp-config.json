@@ -132,5 +132,14 @@
       "externalEndpoints": ["api.openclaw.io"],
       "dataRetention": "none"
     }
+  },
+  "resourceProfile": {
+    "intensity": "high",
+    "estimatedTokenUsage": "5k-20k",
+    "estimatedDuration": "10-60s",
+    "memoryRequirement": "medium",
+    "cpu": "medium",
+    "memory": "256mb",
+    "timeout": 60
   }
 }

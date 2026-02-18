@@ -29,6 +29,15 @@
         "filesystem": ["read:./output", "write:./output"],
         "env": ["OPENCLAW_API_KEY", "OPENCLAW_ENDPOINT"]
       },
+      "resourceProfile": {
+        "intensity": "high",
+        "estimatedTokenUsage": "5k-20k",
+        "estimatedDuration": "10-60s",
+        "memoryRequirement": "medium",
+        "cpu": "medium",
+        "memory": "256mb",
+        "timeout": 60
+      },
       "created": "2026-02-18T00:00:00Z",
       "updated": "2026-02-18T00:00:00Z"
     }

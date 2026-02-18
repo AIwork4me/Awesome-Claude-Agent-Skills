@@ -39,6 +39,10 @@ interface ResourceProfile {
   estimatedTokenUsage: string;
   estimatedDuration: string;
   memoryRequirement: "low" | "medium" | "high";
+  // 2026 Standard: Container resource limits
+  cpu: "low" | "medium" | "high";
+  memory: string;
+  timeout: number;
 }
 
 interface SkillConfig {
@@ -304,28 +308,48 @@ function getDefaultResourceProfile(category: string): ResourceProfile {
       estimatedTokenUsage: "5k-20k",
       estimatedDuration: "10-60s",
       memoryRequirement: "medium",
+      cpu: "medium",
+      memory: "256mb",
+      timeout: 60,
     },
     code: {
       intensity: "medium",
       estimatedTokenUsage: "1k-10k",
       estimatedDuration: "5-30s",
       memoryRequirement: "low",
+      cpu: "low",
+      memory: "128mb",
+      timeout: 30,
     },
     data: {
       intensity: "high",
       estimatedTokenUsage: "10k-50k",
       estimatedDuration: "15-120s",
       memoryRequirement: "high",
+      cpu: "high",
+      memory: "512mb",
+      timeout: 120,
     },
     automation: {
       intensity: "medium",
       estimatedTokenUsage: "500-5k",
       estimatedDuration: "1-30s",
       memoryRequirement: "low",
+      cpu: "low",
+      memory: "128mb",
+      timeout: 30,
     },
   };
 
-  return profiles[category] || profiles.automation;
+  return profiles[category] || {
+    intensity: "low",
+    estimatedTokenUsage: "100-500",
+    estimatedDuration: "<1s",
+    memoryRequirement: "low",
+    cpu: "low",
+    memory: "128mb",
+    timeout: 30,
+  };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1259,10 +1283,14 @@ async function validateSkill(options: { skill: string }): Promise<void> {
     const resourceProfile = (mcpConfig as Record<string, unknown>).resourceProfile as {
       intensity?: string;
       estimatedDuration?: string;
+      cpu?: string;
+      memory?: string;
+      timeout?: number;
     } | undefined;
 
     if (resourceProfile) {
       log(`  ✅ Resource profile: ${resourceProfile.intensity ?? "unknown"} intensity`, "green");
+      log(`     CPU: ${resourceProfile.cpu ?? "N/A"}, Memory: ${resourceProfile.memory ?? "N/A"}, Timeout: ${resourceProfile.timeout ?? "N/A"}s`, "cyan");
     } else {
       log("  ⚠️  No resourceProfile defined (cost estimation unavailable)", "yellow");
     }
@@ -1366,6 +1394,8 @@ async function registerSkill(options: { skill?: string; all?: boolean }): Promis
           },
           entrypoint: `./skills/${localSkill.category}/${localSkill.name}/index.ts`,
           dependencies: [],
+          resourceProfile: (mcpConfig as Record<string, unknown>).resourceProfile as ResourceProfile | undefined
+            || getDefaultResourceProfile(localSkill.category),
           created: getCurrentTimestamp(),
           updated: getCurrentTimestamp(),
         };
@@ -1423,6 +1453,8 @@ async function registerSkill(options: { skill?: string; all?: boolean }): Promis
         },
         entrypoint: `./skills/${localSkill.category}/${localSkill.name}/index.ts`,
         dependencies: [],
+        resourceProfile: (mcpConfig as Record<string, unknown>).resourceProfile as ResourceProfile | undefined
+          || getDefaultResourceProfile(localSkill.category),
         created: getCurrentTimestamp(),
         updated: getCurrentTimestamp(),
       };
