@@ -4,7 +4,7 @@
 
 ### _AI 原生开发的自主技能工厂_
 
-<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=58A6FF&center=true&vCenter=true&width=600&lines=自进化+MCP+技能;AI+维护的注册表;Skill-Link+架构" alt="Typing SVG" />
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=58A6FF&center=true&vCenter=true&width=600&lines=%E8%87%AA%E8%BF%9B%E5%8C%96+MCP+%E6%8A%80%E8%83%BD;AI+%E7%BB%B4%E6%8A%A4%E7%9A%84%E6%B3%A8%E5%86%8C%E8%A1%A8;Skill-Link+%E6%9E%B6%E6%9E%84" alt="Typing SVG" />
 
 ---
 
