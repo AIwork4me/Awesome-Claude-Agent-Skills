@@ -230,7 +230,49 @@ skills/
     "supportsCancellation": true,
     "supportsSelfCorrection": true,
     "maxExecutionTime": 30000
+  },
+  "resourceProfile": {
+    "intensity": "medium",
+    "estimatedTokenUsage": "1k-5k",
+    "estimatedDuration": "5-15s",
+    "memoryRequirement": "low"
   }
+}
+```
+
+### Resource Profile Specification
+
+When creating skills, define the `resourceProfile` to enable cost estimation in orchestration platforms (Dify, LangChain, etc.):
+
+| Field | Type | Values | Description |
+|-------|------|--------|-------------|
+| `intensity` | string | `low`, `medium`, `high`, `critical` | Computational intensity level |
+| `estimatedTokenUsage` | string | e.g., `"1k-5k"`, `"10k-50k"` | Expected token consumption range |
+| `estimatedDuration` | string | e.g., `"1-5s"`, `"30-60s"` | Expected execution time |
+| `memoryRequirement` | string | `low`, `medium`, `high` | Memory footprint |
+
+**Intensity Levels:**
+- **low**: Simple transformations, no external calls
+- **medium**: API calls, basic processing
+- **high**: Multi-step research, web scraping, complex analysis
+- **critical**: Deep reasoning, multi-model orchestration, long-running tasks
+
+**Example Profiles:**
+```json
+// Simple utility skill
+"resourceProfile": {
+  "intensity": "low",
+  "estimatedTokenUsage": "100-500",
+  "estimatedDuration": "<1s",
+  "memoryRequirement": "low"
+}
+
+// Deep research skill
+"resourceProfile": {
+  "intensity": "high",
+  "estimatedTokenUsage": "10k-50k",
+  "estimatedDuration": "30-120s",
+  "memoryRequirement": "medium"
 }
 ```
 
@@ -264,6 +306,47 @@ When implementing a skill, ensure:
 3. Document compatible upstream/downstream skills
 4. Include `diagnostics` for self-healing pipelines
 
+### Generating `nextSkillHint` (Critical)
+
+**IMPORTANT**: When generating `nextSkillHint`, you MUST use the `registry/discovery.json` to find matching skills. **DO NOT hallucinate skill names.**
+
+```typescript
+// ✅ CORRECT: Query the registry
+async function generateNextSkillHint(output: ResearchOutput): Promise<string | undefined> {
+  const registry = await loadRegistry();
+
+  // Find skills that match the output type and category
+  const candidates = registry.skills.filter(skill =>
+    skill.skillLink.input.some(input =>
+      input.includes(output.metadata.skillName) ||
+      input.includes('ResearchOutput')
+    )
+  );
+
+  if (candidates.length > 0) {
+    return candidates[0].name;
+  }
+
+  return undefined;
+}
+
+// ❌ WRONG: Hardcoding or guessing
+return "ai-summarizer"; // May not exist!
+```
+
+**Registry Lookup Pattern:**
+```bash
+# Check discovery.json for available skills
+cat registry/discovery.json | jq '.skills[] | {name, category, capability}'
+```
+
+**Common Skill-Link Chains (from registry):**
+| Upstream | Downstream | Use Case |
+|----------|------------|----------|
+| `openclaw-deep-research` | `ai-summarizer` | Research → Summary |
+| `ai-summarizer` | `github-issue-bot` | Summary → Issue Creation |
+| `content-extractor` | `data-formatter` | Extract → Format |
+
 ---
 
 ## 🔒 Security Audit Protocol
@@ -289,6 +372,8 @@ claude-code audit --skill <skill-name>
 - [ ] No hardcoded credentials
 - [ ] File paths sanitized
 - [ ] Rate limiting implemented for external APIs
+- [ ] **Context-Awareness**: Ensure the skill does NOT leak local environment variables (like `PATH`, `HOME`, `USER`, API keys) to the LLM response unless explicitly required by the skill's functionality
+- [ ] **Cloud/Edge Safety**: Skills running in hybrid cloud or edge environments must sanitize outputs of any system-specific information (hostnames, internal IPs, container IDs)
 
 ---
 
