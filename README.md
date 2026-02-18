@@ -147,10 +147,9 @@ await SkillLink.execute(pipeline);
 
 <div align="center">
 
-| [![WeChat](https://img.shields.io/badge/公众号-AIwork4me-07C160?style=for-the-badge&logo=wechat&logoColor=white)](https://mp.weixin.qq.com) | [![GitHub](https://img.shields.io/badge/GitHub-AIwork4me-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AIwork4me) |
-|:---:|:---:|
+<img src="aiwork4me.jpg" alt="AIwork4me QR Code" width="180"/>
 
-**Join the AI-Native Revolution**
+**Scan barcode for more AI tips**
 
 *Building the future, one agent at a time.*
 
