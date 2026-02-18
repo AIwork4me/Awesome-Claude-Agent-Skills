@@ -62,6 +62,8 @@ bun run scripts/skill-factory.ts register \
 - [ ] README.md Skill Registry table updated
 - [ ] Tests written
 - [ ] Documentation complete
+- [ ] **AI Security Audit**: Run `claude-code audit --skill <name>` to ensure no prompt injection vulnerabilities
+- [ ] **Resiliency Check**: Verify retry logic and fallback modes are implemented
 
 ### Phase 3: REFINE
 
@@ -90,6 +92,82 @@ Transform raw tools into AIwork4me premium standard:
    - Add to `discovery.json`
    - Create GitHub issue template if complex
 
+5. **Resiliency (2026 Standard)**
+   - Implement `retry_logic` for network-dependent tools
+   - Add `fallback_mode` if the primary MCP server is unreachable
+   - Include `self_diagnostic_logs` that Claude can read to fix bugs in the skill itself
+   - Support graceful degradation when dependencies fail
+
+---
+
+## 🧠 Deep Reasoning Protocol
+
+### Self-Correction (2026 Agent Standard)
+
+Every AIwork4me skill must implement the **Self-Correction Protocol**:
+
+```typescript
+interface SelfCorrection {
+  // Detect if skill is in an error state
+  detectAnomaly(): Promise<AnomalyReport>;
+
+  // Attempt automatic recovery
+  autoRecover(anomaly: AnomalyReport): Promise<RecoveryResult>;
+
+  // Log for human review if auto-recovery fails
+  escalateToHuman(error: Error): void;
+}
+```
+
+**Requirements:**
+1. **Anomaly Detection**: Monitor execution patterns for unexpected behavior
+2. **Auto-Recovery**: Implement at least one fallback strategy
+3. **Escalation Path**: Clear logging when human intervention is needed
+4. **Learning**: Store recovery patterns for future reference
+
+### Streaming & Progress (Deep Agent Feature)
+
+All long-running skills MUST implement progress reporting to prevent the Agent from "going dark":
+
+```typescript
+interface ProgressReporter {
+  // Report current progress (0-100)
+  reportProgress(percent: number, message: string): Promise<void>;
+
+  // Report intermediate results
+  reportIntermediate(data: PartialResult): Promise<void>;
+
+  // Signal that skill is still alive
+  heartbeat(): Promise<void>;
+}
+```
+
+**Implementation Requirements:**
+- Skills with execution time >5s must emit progress updates
+- Progress updates at least every 2 seconds
+- Include actionable status messages (e.g., "Fetching page 3 of 10")
+- Support cancellation via AbortSignal
+
+**Example:**
+```typescript
+async function execute(input: ResearchInput, reporter: ProgressReporter): Promise<Output> {
+  await reporter.reportProgress(0, "Starting deep research...");
+
+  for (let i = 0; i < queries.length; i++) {
+    await reporter.reportProgress(
+      (i / queries.length) * 100,
+      `Processing query ${i + 1}/${queries.length}`
+    );
+
+    const result = await fetchWithRetry(queries[i]);
+    await reporter.reportIntermediate({ partialResults: result });
+  }
+
+  await reporter.reportProgress(100, "Research complete");
+  return finalResult;
+}
+```
+
 ---
 
 ## 🏗️ Skill Structure Standard
@@ -104,9 +182,13 @@ skills/
         ├── mcp-config.json       # MCP 2026 configuration
         ├── types.ts              # TypeScript interfaces
         ├── utils.ts              # Helper functions
+        ├── resilience.ts         # Retry logic & fallback modes
+        ├── progress.ts           # Progress reporting implementation
         ├── README.md             # Skill documentation
         └── tests/
-            └── index.test.ts     # Unit tests
+            ├── index.test.ts     # Unit tests
+            ├── resilience.test.ts # Resiliency tests
+            └── security.test.ts   # Security audit tests
 ```
 
 ---
@@ -142,6 +224,12 @@ skills/
     "compatible": true,
     "inputType": "ResearchInput",
     "outputType": "ResearchOutput"
+  },
+  "deepAgent": {
+    "supportsProgress": true,
+    "supportsCancellation": true,
+    "supportsSelfCorrection": true,
+    "maxExecutionTime": 30000
   }
 }
 ```
@@ -161,6 +249,12 @@ interface SkillLinkOutput {
     duration: number;
     nextSkillHint?: string;
   };
+  // 2026: Deep Agent extensions
+  diagnostics?: {
+    warnings: string[];
+    recoveryAttempts: number;
+    finalState: 'success' | 'degraded' | 'failed';
+  };
 }
 ```
 
@@ -168,6 +262,33 @@ When implementing a skill, ensure:
 1. Output conforms to `SkillLinkOutput` interface
 2. Include `nextSkillHint` for suggested chaining
 3. Document compatible upstream/downstream skills
+4. Include `diagnostics` for self-healing pipelines
+
+---
+
+## 🔒 Security Audit Protocol
+
+Before any skill is registered, run the AI-driven security audit:
+
+```bash
+# Run security audit
+claude-code audit --skill <skill-name>
+
+# Audit checks for:
+# - Prompt injection vulnerabilities
+# - Unsafe eval() or exec() usage
+# - Exposed secrets in code
+# - Unvalidated external inputs
+# - SSRF vulnerabilities
+# - Path traversal risks
+```
+
+**Security Checklist:**
+- [ ] No user input passed directly to eval/exec
+- [ ] All external URLs validated against allowlist
+- [ ] No hardcoded credentials
+- [ ] File paths sanitized
+- [ ] Rate limiting implemented for external APIs
 
 ---
 
@@ -178,6 +299,7 @@ When implementing a skill, ensure:
 | Create skill | `bun run scripts/skill-factory.ts create --category=X --name=Y` |
 | Validate skill | `bun run scripts/skill-factory.ts validate --skill=X` |
 | Update registry | `bun run scripts/skill-factory.ts register --skill=X` |
+| Security audit | `claude-code audit --skill=X` |
 | Run tests | `bun test` |
 | Build all | `bun run build` |
 
@@ -190,7 +312,7 @@ When creating documentation:
 - **Tone**: Professional, geeky, practical
 - **Style**: Concise, code-first, example-rich
 - **Colors**: Primary `#FF6B35`, Secondary `#4A90D9`, Accent `#22C55E`
-- **Keywords**: Autonomous, AI-native, Skill-Link, MCP 2026
+- **Keywords**: Autonomous, AI-native, Skill-Link, MCP 2026, Deep Agent, Self-Healing
 
 ---
 
@@ -207,5 +329,7 @@ When creating documentation:
 **Remember**: You are building the future of AI-native development.
 
 *Every skill you create is a step towards autonomous productivity.*
+
+**2026 Deep Agent Standard**: Self-Correcting | Progress-Aware | Security-First
 
 </div>
